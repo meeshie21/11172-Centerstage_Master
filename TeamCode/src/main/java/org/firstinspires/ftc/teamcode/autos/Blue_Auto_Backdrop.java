@@ -24,6 +24,13 @@ public class Blue_Auto_Backdrop extends LinearOpMode
      * The variable to store our instance of the TensorFlow Object Detection processor.
      */
     private TfodProcessor tfod;
+    /*
+    things to fix for auto
+    lower angular velocity
+    tighten servo screw from arm to servo
+    tighten servo screw to mount plate
+    raise threshold for accuracy
+    */
     private static final String[] labels = {"BlueElementv2", "RedElementv2"};
     private static final String TFOD_MODEL_ASSET = "/sdcard/FIRST/tflitemodels/ModelMoreTraining.tflite";
 

@@ -10,7 +10,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.config.Slide;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @TeleOp(name = "TeleOpMain", group = "drive")
 public class SlideTest2 extends LinearOpMode
@@ -26,11 +25,6 @@ public class SlideTest2 extends LinearOpMode
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        Trajectory pickup = drive.trajectoryBuilder(new Pose2d(0, 0, Math.toRadians(0)))
-                .lineTo(new Vector2d(0, -6))
-                .lineTo(new Vector2d(2, -6))
-                .build();
-
 
         waitForStart();
 //hottie
@@ -43,6 +37,16 @@ public class SlideTest2 extends LinearOpMode
                             -gamepad2.right_stick_x * speed
                     )
             );
+
+            if(gamepad2.circle)
+            {
+                 Trajectory pickup = drive.trajectoryBuilder(new Pose2d())
+                    .lineTo(new Vector2d(0, -6))
+                    .lineTo(new Vector2d(2, -6))
+                    .build();
+
+
+            }
 
 //shawty            drive.update();
 
@@ -98,7 +102,6 @@ public class SlideTest2 extends LinearOpMode
 
             if(launch && timer.seconds() > 2) launch = false;
 
-            if(gamepad2.circle) drive.followTrajectoryAsync(pickup);
             //slide.launch(launch);
         }
     }
