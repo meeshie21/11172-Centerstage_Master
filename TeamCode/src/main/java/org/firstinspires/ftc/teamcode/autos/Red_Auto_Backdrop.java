@@ -34,8 +34,7 @@ public class Red_Auto_Backdrop extends LinearOpMode
      */
     private VisionPortal visionPortal;
 
-    public double middlePos1 = 0.6;
-    public double middlePos2 = 0.65;
+    public double middlePos1 = 0.75;
 
 
     @Override
@@ -106,7 +105,7 @@ public class Red_Auto_Backdrop extends LinearOpMode
                 drive.followTrajectorySequence(park);
                 break;
             case "middle":
-                slide.setArmPos(middlePos2);
+                slide.setArmPos(middlePos1);
                 drive.followTrajectorySequence(middle);
                 sleep(1000);
                 slide.openClaw();

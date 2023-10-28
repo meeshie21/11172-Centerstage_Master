@@ -34,8 +34,7 @@ public class Blue_Auto_Backdrop extends LinearOpMode
      */
     private VisionPortal visionPortal;
 
-    public double middlePos1 = 0.6;
-    public double middlePos2 = 0.63;
+    public double middlePos1 = 0.75;
 
 
     @Override
@@ -52,11 +51,12 @@ public class Blue_Auto_Backdrop extends LinearOpMode
                 .build();
 
         TrajectorySequence right = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
-                .lineToLinearHeading(new Pose2d(-37.45, -37, Math.toRadians(90.00)))
-                .lineToLinearHeading(new Pose2d(-25.45, -37, Math.toRadians(90.00)))
-                .lineToLinearHeading(new Pose2d(-35.98, -37, Math.toRadians(0.00)))
-                .lineTo(new Vector2d(-40.08, -37))
-                .lineToLinearHeading(new Pose2d(-85, -20.32, Math.toRadians(180.00)))
+                .lineToLinearHeading(new Pose2d(-43, -37, Math.toRadians(90.00)))
+                .lineToLinearHeading(new Pose2d(-40, -37, Math.toRadians(0.00)))
+                .lineTo(new Vector2d(-25.45, -39))
+                .lineTo(new Vector2d(-45, -39))
+                //.lineTo(new Vector2d(-40.08, -37))
+                .lineToLinearHeading(new Pose2d(-85, -35.32, Math.toRadians(180.00)))
                 .build();
 
         TrajectorySequence left = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
@@ -107,7 +107,7 @@ public class Blue_Auto_Backdrop extends LinearOpMode
                 drive.followTrajectorySequence(park);
                 break;
             case "middle":
-                slide.setArmPos(middlePos2);
+                slide.setArmPos(middlePos1);
                 drive.followTrajectorySequence(middle);
                 sleep(1000);
                 slide.openClaw();
