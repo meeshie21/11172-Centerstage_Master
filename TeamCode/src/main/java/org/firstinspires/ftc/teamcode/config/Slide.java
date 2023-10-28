@@ -97,6 +97,9 @@ public class Slide {
     public void openClaw() {claw.setPosition(1);}
     public void middleClaw() {claw.setPosition(0.22);}
     public void closeClaw() {claw.setPosition(0.5);}
+    public void clawPos1() {claw.setPosition(0.65);}
+    public void clawPos2() {claw.setPosition(0.35);}
 
-    }
+
+}
 

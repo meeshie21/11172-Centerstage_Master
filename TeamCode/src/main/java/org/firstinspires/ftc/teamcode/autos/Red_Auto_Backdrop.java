@@ -45,22 +45,22 @@ public class Red_Auto_Backdrop extends LinearOpMode
         String path = "middle";
 
         TrajectorySequence middle = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
-                .lineToLinearHeading(new Pose2d(-40.07, -31.5, Math.toRadians(90.00)))
+                .lineToLinearHeading(new Pose2d(-40.07, -30, Math.toRadians(90.00)))
                 .lineTo(new Vector2d(-39.55, -40.53))
-                .lineToLinearHeading(new Pose2d(9.06, -41.32, Math.toRadians(0.00)))
+                .lineToLinearHeading(new Pose2d(7, -41.32, Math.toRadians(0.00)))
                 .build();
 
         TrajectorySequence left = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
                 .lineToLinearHeading(new Pose2d(-37.97, -48.41, Math.toRadians(180-78.019108272)))
                 .lineToLinearHeading(new Pose2d(-43.62, -37.6256, Math.toRadians(180-52.790445864)))
                 .lineToLinearHeading(new Pose2d(-37.97, -48.41, Math.toRadians(180-78.019108272)))
-                .lineToLinearHeading(new Pose2d(9.06, -31.5, Math.toRadians(0.00)))
+                .lineToLinearHeading(new Pose2d(7, -32.5, Math.toRadians(0.00)))
                 .build();
 
         TrajectorySequence right = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
                 .lineToLinearHeading(new Pose2d(-20.14, -36.78, Math.toRadians(90.00)))
                 .lineTo(new Vector2d(-20.14, -51.53))
-                .lineToLinearHeading(new Pose2d(9.06, -43.8, Math.toRadians(0.00)))
+                .lineToLinearHeading(new Pose2d(7, -41.8, Math.toRadians(0.00)))
                 .build();
 
         TrajectorySequence park = drive.trajectorySequenceBuilder(new Pose2d(9.17, -36.39, Math.toRadians(0.00)))
@@ -192,7 +192,7 @@ public class Red_Auto_Backdrop extends LinearOpMode
         visionPortal = builder.build();
 
         // Set confidence threshold for TFOD recognitions, at any time.
-        //tfod.setMinResultConfidence(0.75f);
+        tfod.setMinResultConfidence(0.9f);
 
         // Disable or re-enable the TFOD processor at any time.
         //visionPortal.setProcessorEnabled(tfod, true);
