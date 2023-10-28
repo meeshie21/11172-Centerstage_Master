@@ -12,12 +12,14 @@ import org.firstinspires.ftc.teamcode.config.Slide;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
 import java.util.List;
 
-@Autonomous (name = "Red_Auto_Backdrop", group = "autos")
-public class Red_Auto_Backdrop extends LinearOpMode
+@Autonomous (name = "Blue_Auto_Double", group = "autos")
+public class Blue_Auto_Double extends LinearOpMode
 {    private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
     /**
@@ -26,6 +28,7 @@ public class Red_Auto_Backdrop extends LinearOpMode
     private TfodProcessor tfod;
     private static final String[] labels = {"BlueElementv2", "RedElementv2"};
     private static final String TFOD_MODEL_ASSET = "/sdcard/FIRST/tflitemodels/ModelMoreTraining.tflite";
+    private AprilTagProcessor tagproc;
 
 
 
@@ -45,31 +48,44 @@ public class Red_Auto_Backdrop extends LinearOpMode
         String path = "middle";
 
         TrajectorySequence middle = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
-                .lineToLinearHeading(new Pose2d(-40.07, -31.5, Math.toRadians(90.00)))
-                .lineTo(new Vector2d(-39.55, -40.53))
-                .lineToLinearHeading(new Pose2d(9.06, -41.32, Math.toRadians(0.00)))
+                .lineToLinearHeading(new Pose2d(-35.87, -31.5, Math.toRadians(89.17)))
+                .lineTo(new Vector2d(-36.39, -40.53))
+                .lineToLinearHeading(new Pose2d(-85, -41.32, Math.toRadians(180.00)))
+                .build();
+
+        /*TrajectorySequence right = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
+                .lineTo(new Vector2d(-50, -35))
+                .lineToLinearHeading(new Pose2d(-45, -35, Math.toRadians(45.00)))
+                .lineToLinearHeading(new Pose2d(-40, -35, Math.toRadians(0.00)))
+                .lineTo(new Vector2d(-37, -35))
+                .lineToLinearHeading(new Pose2d(-66, -35, Math.toRadians(90.00)))
+                //.lineTo(new Vector2d(-40.08, -37))
+                .lineToLinearHeading(new Pose2d(-89, -26, Math.toRadians(175.00)))
+                .build();*/
+        TrajectorySequence right = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
+                .lineToLinearHeading(new Pose2d(-37.97, -48.41, Math.toRadians(78.019108272)))
+                .lineToLinearHeading(new Pose2d(-32.3204, -37.6256, Math.toRadians(52.790445864)))
+                .lineToLinearHeading(new Pose2d(-37.97, -48.41, Math.toRadians(78.019108272)))
+                .lineToLinearHeading(new Pose2d(-85, -33, Math.toRadians(180.00)))
+                .lineToLinearHeading(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
+                .lineTo(new Vector2d(-36.39, -40.53))
+                .lineToLinearHeading(new Pose2d(-85, -41.32, Math.toRadians(180.00)))
                 .build();
 
         TrajectorySequence left = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
-                .lineToLinearHeading(new Pose2d(-37.97, -48.41, Math.toRadians(180-78.019108272)))
-                .lineToLinearHeading(new Pose2d(-43.62, -37.6256, Math.toRadians(180-52.790445864)))
-                .lineToLinearHeading(new Pose2d(-37.97, -48.41, Math.toRadians(180-78.019108272)))
-                .lineToLinearHeading(new Pose2d(9.06, -31.5, Math.toRadians(0.00)))
+                .lineToLinearHeading(new Pose2d(-55.8, -36.78, Math.toRadians(89.17)))
+                .lineTo(new Vector2d(-55.8, -51.53))
+                .lineToLinearHeading(new Pose2d(-85, -39.32, Math.toRadians(180.00)))
                 .build();
 
-        TrajectorySequence right = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
-                .lineToLinearHeading(new Pose2d(-20.14, -36.78, Math.toRadians(90.00)))
-                .lineTo(new Vector2d(-20.14, -51.53))
-                .lineToLinearHeading(new Pose2d(9.06, -43.8, Math.toRadians(0.00)))
-                .build();
-
-        TrajectorySequence park = drive.trajectorySequenceBuilder(new Pose2d(9.17, -36.39, Math.toRadians(0.00)))
-                .lineTo(new Vector2d(-5.28, -36.05))
-                .lineTo(new Vector2d(6.95, -60.62))
+        TrajectorySequence park = drive.trajectorySequenceBuilder(new Pose2d(-60.77, -36.39, Math.toRadians(180.00)))
+                .lineTo(new Vector2d(-47.28, -36.05))
+                .lineTo(new Vector2d(-58.99, -60.62))
                 .build();
         initTfod();
 
         while (!isStarted()) {
+            telemetryAprilTag();
             telemetryTfod();
             telemetry.update();
             slide.middleClaw();
@@ -81,28 +97,28 @@ public class Red_Auto_Backdrop extends LinearOpMode
 
         sleep(500);
 
+
         slide.bottom();
         drive.setPoseEstimate(middle.start());
 
         switch(path)
         {
             case "left":
-                drive.followTrajectorySequence(left);
                 slide.setArmPos(middlePos1);
+                drive.followTrajectorySequence(left);
                 sleep(1000);
                 slide.openClaw();
-                sleep(2000);
 
                 drive.setPoseEstimate(park.start());
                 drive.followTrajectorySequence(park);
                 break;
             case "right":
-                slide.setArmPos(middlePos1);
                 drive.followTrajectorySequence(right);
+                sleep(500);
+                slide.setArmPos(middlePos1);
                 sleep(1000);
                 slide.openClaw();
-                sleep(2000);
-
+                sleep(1000);
                 drive.setPoseEstimate(park.start());
                 drive.followTrajectorySequence(park);
                 break;
@@ -111,7 +127,6 @@ public class Red_Auto_Backdrop extends LinearOpMode
                 drive.followTrajectorySequence(middle);
                 sleep(1000);
                 slide.openClaw();
-                sleep(2000);
 
                 drive.setPoseEstimate(park.start());
                 drive.followTrajectorySequence(park);
@@ -136,7 +151,25 @@ public class Red_Auto_Backdrop extends LinearOpMode
             telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
         }   // end for() loop
 
-    }   // end method telemetryTfod()
+    }
+    private void telemetryAprilTag() {
+        List<AprilTagDetection> currentDetections = tagproc.getDetections();
+        telemetry.addData("# AprilTags Detected", currentDetections.size());
+
+        // Step through the list of detections and display info for each one.
+        for (AprilTagDetection detection : currentDetections) {
+            if (detection.metadata != null) {
+                telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
+                telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
+                telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch, detection.ftcPose.roll, detection.ftcPose.yaw));
+                telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
+            } else {
+                telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
+                telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
+            }
+        }   // end for() loop
+
+    }   // end method telemetryAprilTag()// end method telemetryTfod()
     private void initTfod() {
 
         // Create the TensorFlow processor by using a builder.
@@ -160,7 +193,11 @@ public class Red_Auto_Backdrop extends LinearOpMode
                 //.setModelAspectRatio(16.0 / 9.0)
 
                 .build();
-
+        tagproc = new AprilTagProcessor.Builder()
+                .setDrawTagOutline(true)
+                .setDrawTagID(true)
+                .setDrawCubeProjection(true)
+                .build();
         // Create the vision portal by using a builder.
         VisionPortal.Builder builder = new VisionPortal.Builder();
 
@@ -187,6 +224,7 @@ public class Red_Auto_Backdrop extends LinearOpMode
 
         // Set and enable the processor.
         builder.addProcessor(tfod);
+        builder.addProcessor(tagproc);
 
         // Build the Vision Portal, using the above settings.
         visionPortal = builder.build();

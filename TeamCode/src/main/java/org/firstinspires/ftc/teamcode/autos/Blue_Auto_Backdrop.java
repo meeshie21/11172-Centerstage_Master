@@ -50,18 +50,25 @@ public class Blue_Auto_Backdrop extends LinearOpMode
                 .lineToLinearHeading(new Pose2d(-85, -41.32, Math.toRadians(180.00)))
                 .build();
 
-        TrajectorySequence right = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
-                .lineToLinearHeading(new Pose2d(-43, -37, Math.toRadians(90.00)))
-                .lineToLinearHeading(new Pose2d(-40, -37, Math.toRadians(0.00)))
-                .lineTo(new Vector2d(-25.45, -39))
-                .lineTo(new Vector2d(-45, -39))
+        /*TrajectorySequence right = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
+                .lineTo(new Vector2d(-50, -35))
+                .lineToLinearHeading(new Pose2d(-45, -35, Math.toRadians(45.00)))
+                .lineToLinearHeading(new Pose2d(-40, -35, Math.toRadians(0.00)))
+                .lineTo(new Vector2d(-37, -35))
+                .lineToLinearHeading(new Pose2d(-66, -35, Math.toRadians(90.00)))
                 //.lineTo(new Vector2d(-40.08, -37))
-                .lineToLinearHeading(new Pose2d(-85, -35.32, Math.toRadians(180.00)))
+                .lineToLinearHeading(new Pose2d(-89, -26, Math.toRadians(175.00)))
+                .build();*/
+        TrajectorySequence right = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
+                .lineToLinearHeading(new Pose2d(-37.97, -48.41, Math.toRadians(78.019108272)))
+                .lineToLinearHeading(new Pose2d(-32.3204, -37.6256, Math.toRadians(52.790445864)))
+                .lineToLinearHeading(new Pose2d(-37.97, -48.41, Math.toRadians(78.019108272)))
+                .lineToLinearHeading(new Pose2d(-85, -31.5, Math.toRadians(180.00)))
                 .build();
 
         TrajectorySequence left = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
-                .lineToLinearHeading(new Pose2d(-53.8, -41.78, Math.toRadians(89.17)))
-                .lineTo(new Vector2d(-53.8, -51.53))
+                .lineToLinearHeading(new Pose2d(-55.8, -36.78, Math.toRadians(89.17)))
+                .lineTo(new Vector2d(-55.8, -51.53))
                 .lineToLinearHeading(new Pose2d(-85, -39.32, Math.toRadians(180.00)))
                 .build();
 
@@ -84,6 +91,7 @@ public class Blue_Auto_Backdrop extends LinearOpMode
         sleep(500);
 
 
+        slide.bottom();
         drive.setPoseEstimate(middle.start());
 
         switch(path)
@@ -93,16 +101,18 @@ public class Blue_Auto_Backdrop extends LinearOpMode
                 drive.followTrajectorySequence(left);
                 sleep(1000);
                 slide.openClaw();
+                sleep(2000);
 
                 drive.setPoseEstimate(park.start());
                 drive.followTrajectorySequence(park);
                 break;
             case "right":
-                slide.setArmPos(middlePos1);
                 drive.followTrajectorySequence(right);
+                sleep(500);
+                slide.setArmPos(middlePos1);
                 sleep(1000);
                 slide.openClaw();
-
+                sleep(2000);
                 drive.setPoseEstimate(park.start());
                 drive.followTrajectorySequence(park);
                 break;
@@ -111,6 +121,7 @@ public class Blue_Auto_Backdrop extends LinearOpMode
                 drive.followTrajectorySequence(middle);
                 sleep(1000);
                 slide.openClaw();
+                sleep(2000);
 
                 drive.setPoseEstimate(park.start());
                 drive.followTrajectorySequence(park);
