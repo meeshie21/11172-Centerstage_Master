@@ -34,7 +34,7 @@ public class Red_Auto_Backdrop extends LinearOpMode
      */
     private VisionPortal visionPortal;
 
-    public double middlePos1 = 0.75;
+    public double middlePos1 = 0.79;
 
 
     @Override
@@ -54,10 +54,14 @@ public class Red_Auto_Backdrop extends LinearOpMode
                 .lineToLinearHeading(new Pose2d(-37.97, -48.41, Math.toRadians(180-78.019108272)))
                 .lineToLinearHeading(new Pose2d(-43.62, -37.6256, Math.toRadians(180-52.790445864)))
                 .lineToLinearHeading(new Pose2d(-37.97, -48.41, Math.toRadians(180-78.019108272)))
-                .lineToLinearHeading(new Pose2d(7, -32.5, Math.toRadians(0.00)))
                 .build();
 
-        TrajectorySequence right = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
+        TrajectorySequence left2 = drive.trajectorySequenceBuilder(left.end())
+                        .lineToLinearHeading(new Pose2d(7, -35.5, Math.toRadians(0.00)))
+                .build();
+
+
+                TrajectorySequence right = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
                 .lineToLinearHeading(new Pose2d(-20.14, -36.78, Math.toRadians(90.00)))
                 .lineTo(new Vector2d(-20.14, -51.53))
                 .lineToLinearHeading(new Pose2d(7, -41.8, Math.toRadians(0.00)))
@@ -88,8 +92,10 @@ public class Red_Auto_Backdrop extends LinearOpMode
         {
             case "left":
                 drive.followTrajectorySequence(left);
+                sleep(500);
                 slide.setArmPos(middlePos1);
                 sleep(1000);
+                drive.followTrajectorySequence(left2);
                 slide.openClaw();
                 sleep(2000);
 
@@ -97,8 +103,8 @@ public class Red_Auto_Backdrop extends LinearOpMode
                 drive.followTrajectorySequence(park);
                 break;
             case "right":
-                slide.setArmPos(middlePos1);
                 drive.followTrajectorySequence(right);
+                slide.setArmPos(middlePos1);
                 sleep(1000);
                 slide.openClaw();
                 sleep(2000);

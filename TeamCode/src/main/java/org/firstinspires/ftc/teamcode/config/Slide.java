@@ -78,24 +78,27 @@ public class Slide {
 
     public void middle()
     {
+        setArmPos(0.75);
         right.setPosition(0.5);
         left.setPosition(0.5);
     }
 
     public void top()
     {
+        setArmPos(0.76);
         right.setPosition(0.9);
         left.setPosition(0.1);
     }
 
     public void bottom()
     {
+        setArmPos(0.745);
         right.setPosition(0);
         left.setPosition(1);
     }
 
-    public void openClaw() {claw.setPosition(1);}
-    public void middleClaw() {claw.setPosition(0.22);}
+    public void openClaw() {claw.setPosition(0.65);}
+    public void middleClaw() {claw.setPosition(0.42);}
     public void closeClaw() {claw.setPosition(0.5);}
     public void clawPos1() {claw.setPosition(0.65);}
     public void clawPos2() {claw.setPosition(0.35);}

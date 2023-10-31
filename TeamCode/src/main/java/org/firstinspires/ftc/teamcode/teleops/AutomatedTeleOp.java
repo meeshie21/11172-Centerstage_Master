@@ -13,6 +13,8 @@ import org.firstinspires.ftc.teamcode.config.Slide;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDriveCancelable;
 
+import java.util.Vector;
+
 /**
  * This opmode demonstrates how one can augment driver control by following Road Runner arbitrary
  * Road Runner trajectories at any time during teleop. This really isn't recommended at all. This is
@@ -122,14 +124,13 @@ public class AutomatedTeleOp extends LinearOpMode {
                         else speed = 0.5;
                     }
 
-                    if(gamepad1.right_trigger >= 0.5) slide.setArmPos(0.8);
-                    if(gamepad1.left_trigger >= 0.5) slide.setArmPos(0.75);
+                    if(gamepad1.right_trigger >= 0.5) slide.setArmPos(0.782);
                     if(gamepad1.right_stick_button) slide.setArmPos(0.675);
-                    if(gamepad1.left_stick_button) slide.setArmPos(0.78);
+                    if(gamepad1.left_stick_button) slide.setArmPos(0.77);
                     if(gamepad1.right_bumper) slide.middleClaw();
                     if(gamepad1.left_bumper) slide.openClaw();
                     slide.setSlide(gamepad1.right_stick_y);
-//penis
+//penis in my mouth
                     if(gamepad1.dpad_down)
                     {
                         slide.bottom();
@@ -172,18 +173,22 @@ public class AutomatedTeleOp extends LinearOpMode {
 
 
                        Trajectory pickup = drive.trajectoryBuilder(new Pose2d())
-                               .lineTo(new Vector2d(0, -6))
+                               .lineTo(new Vector2d(-10, 0))
                                .addDisplacementMarker(() -> drive.followTrajectoryAsync(
-                                       drive.trajectoryBuilder(new Pose2d(0 , -6, Math.toRadians(0)))
-                                               .lineTo(new Vector2d(2, -6))
-                                               .build()
+                                       drive.trajectoryBuilder(new Pose2d(-10 , 0, Math.toRadians(0)))
+                                               .lineToLinearHeading(new Pose2d(-8, 18, Math.toRadians(-90.00)))
+                                               .addDisplacementMarker(() -> drive.followTrajectoryAsync(
+                                                       drive.trajectoryBuilder(new Pose2d(-8, 18, Math.toRadians(-90.00)))
+                                                               .lineTo(new Vector2d(13, 17.35)).build())).build()
                                ))
                                .build();
 
 
-                        drive.followTrajectoryAsync(pickup);
+                       drive.setPoseEstimate(new Pose2d());
+                       slide.openClaw();
+                       drive.followTrajectoryAsync(pickup);
 
-                        currentMode = Mode.AUTOMATIC_CONTROL;
+                       currentMode = Mode.AUTOMATIC_CONTROL;
                     }
                     break;
                 case AUTOMATIC_CONTROL:
