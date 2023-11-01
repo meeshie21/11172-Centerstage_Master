@@ -41,7 +41,7 @@ public class Blue_Auto_Backdrop extends LinearOpMode
      */
     private VisionPortal visionPortal;
 
-    public double middlePos1 = 0.79;
+    public double middlePos1 = 0.75;
 
 
     @Override
@@ -92,6 +92,7 @@ public class Blue_Auto_Backdrop extends LinearOpMode
         while (!isStarted()) {
             telemetryTfod();
             telemetry.update();
+            slide.launch(false);
             slide.middleClaw();
             path = getSide();
         }
@@ -102,7 +103,7 @@ public class Blue_Auto_Backdrop extends LinearOpMode
         sleep(500);
 
 
-        slide.bottom();
+        slide.bottomAuto();
         drive.setPoseEstimate(middle.start());
 
         switch(path)
@@ -119,7 +120,6 @@ public class Blue_Auto_Backdrop extends LinearOpMode
                 break;
             case "right":
                 drive.followTrajectorySequence(right);
-                sleep(500);
                 slide.setArmPos(middlePos1);
                 sleep(1000);
                 drive.followTrajectorySequence(right2);
@@ -139,6 +139,7 @@ public class Blue_Auto_Backdrop extends LinearOpMode
                 drive.followTrajectorySequence(park);
                 break;
         }
+        slide.setArmPos(0.675);
 
 
     }

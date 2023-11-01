@@ -86,6 +86,7 @@ public class AutomatedTeleOp extends LinearOpMode {
         // See AutoTransferPose.java for further details
         drive.setPoseEstimate(new Pose2d());
 
+        slide.launch(false);
         waitForStart();
 
         if (isStopRequested()) return;
@@ -124,15 +125,9 @@ public class AutomatedTeleOp extends LinearOpMode {
                         else speed = 0.5;
                     }
 
-                    if(gamepad1.right_trigger >= 0.5)
-                    {
-                        slide.setArmPos(0.782);
-                        slide.targetPos(true, 200);
-                    }
-                    else slide.targetPos(false, 0);
-
+                    if(gamepad1.right_trigger >= 0.5) slide.setArmPos(0.7875);
                     if(gamepad1.right_stick_button) slide.setArmPos(0.675);
-                    if(gamepad1.left_stick_button) slide.setArmPos(0.77);
+                    if(gamepad1.left_stick_button) slide.setArmPos(0.7765);
                     if(gamepad1.right_bumper) slide.middleClaw();
                     if(gamepad1.left_bumper) slide.openClaw();
                     slide.setSlide(gamepad1.right_stick_y);
@@ -161,16 +156,11 @@ public class AutomatedTeleOp extends LinearOpMode {
                     else if(gamepad1.options) slide.pullRight(1);
                     else slide.pullRight(0);
 
-                    if(gamepad1.touchpad && !launch)
+                    if(gamepad1.touchpad)
                     {
-                        timer.reset();
-                        launch = true;
+                        slide.launch(true);
                     }
 
-                    if(launch && timer.seconds() > 2) launch = false;
-
-                    //slide.launch(launch);
-                    ;
 
                    if (gamepad2.circle) {
                         // If the B button is pressed on gamepad1, we generate a lineTo()
@@ -182,10 +172,10 @@ public class AutomatedTeleOp extends LinearOpMode {
                                .lineTo(new Vector2d(-10, 0))
                                .addDisplacementMarker(() -> drive.followTrajectoryAsync(
                                        drive.trajectoryBuilder(new Pose2d(-10 , 0, Math.toRadians(0)))
-                                               .lineToLinearHeading(new Pose2d(-8, 21, Math.toRadians(-90.00)))
+                                               .lineToLinearHeading(new Pose2d(-8, 18, Math.toRadians(-90.00)))
                                                .addDisplacementMarker(() -> drive.followTrajectoryAsync(
                                                        drive.trajectoryBuilder(new Pose2d(-8, 18, Math.toRadians(-90.00)))
-                                                               .lineTo(new Vector2d(13, 20.35)).build())).build()
+                                                               .lineTo(new Vector2d(13, 17.35)).build())).build()
                                ))
                                .build();
 
