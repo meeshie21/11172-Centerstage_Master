@@ -124,7 +124,13 @@ public class AutomatedTeleOp extends LinearOpMode {
                         else speed = 0.5;
                     }
 
-                    if(gamepad1.right_trigger >= 0.5) slide.setArmPos(0.782);
+                    if(gamepad1.right_trigger >= 0.5)
+                    {
+                        slide.setArmPos(0.782);
+                        slide.targetPos(true, 200);
+                    }
+                    else slide.targetPos(false, 0);
+
                     if(gamepad1.right_stick_button) slide.setArmPos(0.675);
                     if(gamepad1.left_stick_button) slide.setArmPos(0.77);
                     if(gamepad1.right_bumper) slide.middleClaw();
@@ -176,10 +182,10 @@ public class AutomatedTeleOp extends LinearOpMode {
                                .lineTo(new Vector2d(-10, 0))
                                .addDisplacementMarker(() -> drive.followTrajectoryAsync(
                                        drive.trajectoryBuilder(new Pose2d(-10 , 0, Math.toRadians(0)))
-                                               .lineToLinearHeading(new Pose2d(-8, 18, Math.toRadians(-90.00)))
+                                               .lineToLinearHeading(new Pose2d(-8, 21, Math.toRadians(-90.00)))
                                                .addDisplacementMarker(() -> drive.followTrajectoryAsync(
                                                        drive.trajectoryBuilder(new Pose2d(-8, 18, Math.toRadians(-90.00)))
-                                                               .lineTo(new Vector2d(13, 17.35)).build())).build()
+                                                               .lineTo(new Vector2d(13, 20.35)).build())).build()
                                ))
                                .build();
 

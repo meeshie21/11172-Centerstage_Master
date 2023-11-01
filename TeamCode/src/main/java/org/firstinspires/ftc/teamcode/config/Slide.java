@@ -11,6 +11,8 @@ public class Slide {
     public DcMotor slide, launcher, tape, pullRight, pullLeft;
     public Servo arm, claw, right, left;
 
+    public boolean targetPos;
+
     public Slide(HardwareMap map) {
         slide = map.dcMotor.get("slide");
         //launcher = map.dcMotor.get("launcher");
@@ -27,6 +29,14 @@ public class Slide {
 
     public void moveSlide() {
 
+    }
+
+    public void targetPos(boolean bool, int target)
+    {
+        targetPos = bool;
+        slide.setTargetPosition(target);
+        slide.setMode(bool ? DcMotor.RunMode.RUN_TO_POSITION : DcMotor.RunMode.RUN_USING_ENCODER);
+        slide.setPower(1);
     }
 
     public void setSlide(double power) {
