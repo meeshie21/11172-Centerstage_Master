@@ -41,7 +41,7 @@ public class Blue_Auto_Backdrop extends LinearOpMode
      */
     private VisionPortal visionPortal;
 
-    public double middlePos1 = 0.75;
+    public double middlePos1 = 0.74;
 
 
     @Override
@@ -52,9 +52,9 @@ public class Blue_Auto_Backdrop extends LinearOpMode
         String path = "middle";
 
         TrajectorySequence middle = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
-                .lineToLinearHeading(new Pose2d(-35.87, -33, Math.toRadians(89.17)))
+                .lineToLinearHeading(new Pose2d(-35.87, -31, Math.toRadians(89.17)))
                 .lineTo(new Vector2d(-36.39, -40.53))
-                .lineToLinearHeading(new Pose2d(-84.5, -41.32, Math.toRadians(180.00)))
+                .lineToLinearHeading(new Pose2d(-82.5, -41.32, Math.toRadians(180.00)))
                 .build();
 
         /*TrajectorySequence right = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
@@ -116,6 +116,7 @@ public class Blue_Auto_Backdrop extends LinearOpMode
                 sleep(2000);
 
                 drive.setPoseEstimate(park.start());
+                slide.setArmPos(0.675);
                 drive.followTrajectorySequence(park);
                 break;
             case "right":
@@ -126,20 +127,21 @@ public class Blue_Auto_Backdrop extends LinearOpMode
                 slide.openClaw();
                 sleep(2000);
                 drive.setPoseEstimate(park.start());
+                slide.setArmPos(0.675);
                 drive.followTrajectorySequence(park);
                 break;
             case "middle":
-                slide.setArmPos(middlePos1);
                 drive.followTrajectorySequence(middle);
+                slide.setArmPos(0.75);
                 sleep(1000);
                 slide.openClaw();
                 sleep(2000);
 
                 drive.setPoseEstimate(park.start());
+                slide.setArmPos(0.675);
                 drive.followTrajectorySequence(park);
                 break;
         }
-        slide.setArmPos(0.675);
 
 
     }
@@ -215,7 +217,7 @@ public class Blue_Auto_Backdrop extends LinearOpMode
         visionPortal = builder.build();
 
         // Set confidence threshold for TFOD recognitions, at any time.
-        tfod.setMinResultConfidence(0.9f);
+        tfod.setMinResultConfidence(0.8f);
 
         // Disable or re-enable the TFOD processor at any time.
         //visionPortal.setProcessorEnabled(tfod, true);
@@ -226,9 +228,13 @@ public class Blue_Auto_Backdrop extends LinearOpMode
      */
     private String getSide() {
         List<Recognition> recognition = tfod.getRecognitions();
-        if (recognition.isEmpty())return "left";
-        else if (recognition.get(0).getLeft()>300) return "right";
-        else if (recognition.get(0).getLeft()<=300) return "middle";
+        if (recognition.isEmpty()) return "left";
+        for (int i = 0; i<recognition.size(); i++) {
+            if (recognition.get(i).getWidth()>250 || recognition.get(i).getHeight()>250) {}
+            else if (recognition.get(i).getLeft() > 300) return "right";
+            else if (recognition.get(i).getLeft() <= 300) return "middle";
+        }
         return null;
+
     }
 }

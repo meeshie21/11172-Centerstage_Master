@@ -34,7 +34,7 @@ public class Red_Auto_Backdrop extends LinearOpMode
      */
     private VisionPortal visionPortal;
 
-    public double middlePos1 = 0.75;
+    public double middlePos1 = 0.74;
 
 
     @Override
@@ -45,9 +45,9 @@ public class Red_Auto_Backdrop extends LinearOpMode
         String path = "middle";
 
         TrajectorySequence middle = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
-                .lineToLinearHeading(new Pose2d(-40.07, -30, Math.toRadians(90.00)))
+                .lineToLinearHeading(new Pose2d(-40.07, -31, Math.toRadians(90.00)))
                 .lineTo(new Vector2d(-39.55, -40.53))
-                .lineToLinearHeading(new Pose2d(7, -41.32, Math.toRadians(0.00)))
+                .lineToLinearHeading(new Pose2d(5, -43.32, Math.toRadians(0.00)))
                 .build();
 
         TrajectorySequence left = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
@@ -57,14 +57,14 @@ public class Red_Auto_Backdrop extends LinearOpMode
                 .build();
 
         TrajectorySequence left2 = drive.trajectorySequenceBuilder(left.end())
-                        .lineToLinearHeading(new Pose2d(7, -35.5, Math.toRadians(0.00)))
+                        .lineToLinearHeading(new Pose2d(10, -35.5, Math.toRadians(0.00)))
                 .build();
 
 
                 TrajectorySequence right = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
-                .lineToLinearHeading(new Pose2d(-20.14, -36.78, Math.toRadians(90.00)))
-                .lineTo(new Vector2d(-20.14, -51.53))
-                .lineToLinearHeading(new Pose2d(7, -41.8, Math.toRadians(0.00)))
+                .lineToLinearHeading(new Pose2d(-19.14, -36.78, Math.toRadians(90.00)))
+                .lineTo(new Vector2d(-19.14, -51.53))
+                .lineToLinearHeading(new Pose2d(11.5, -46.75, Math.toRadians(0.00)))
                 .build();
 
         TrajectorySequence park = drive.trajectorySequenceBuilder(new Pose2d(9.17, -36.39, Math.toRadians(0.00)))
@@ -97,10 +97,12 @@ public class Red_Auto_Backdrop extends LinearOpMode
                 slide.setArmPos(middlePos1);
                 sleep(1000);
                 drive.followTrajectorySequence(left2);
+                sleep(1000);
                 slide.openClaw();
                 sleep(2000);
 
                 drive.setPoseEstimate(park.start());
+                slide.setArmPos(0.675);
                 drive.followTrajectorySequence(park);
                 break;
             case "right":
@@ -111,20 +113,21 @@ public class Red_Auto_Backdrop extends LinearOpMode
                 sleep(2000);
 
                 drive.setPoseEstimate(park.start());
+                slide.setArmPos(0.675);
                 drive.followTrajectorySequence(park);
                 break;
             case "middle":
-                slide.setArmPos(middlePos1);
                 drive.followTrajectorySequence(middle);
+                slide.setArmPos(0.75);
                 sleep(1000);
                 slide.openClaw();
                 sleep(2000);
 
                 drive.setPoseEstimate(park.start());
+                slide.setArmPos(0.675);
                 drive.followTrajectorySequence(park);
                 break;
         }
-        slide.setArmPos(0.675);
 
 
     }
@@ -200,7 +203,7 @@ public class Red_Auto_Backdrop extends LinearOpMode
         visionPortal = builder.build();
 
         // Set confidence threshold for TFOD recognitions, at any time.
-        tfod.setMinResultConfidence(0.9f);
+        tfod.setMinResultConfidence(0.8f);
 
         // Disable or re-enable the TFOD processor at any time.
         //visionPortal.setProcessorEnabled(tfod, true);
@@ -211,9 +214,13 @@ public class Red_Auto_Backdrop extends LinearOpMode
      */
     private String getSide() {
         List<Recognition> recognition = tfod.getRecognitions();
-        if (recognition.isEmpty())return "left";
-        else if (recognition.get(0).getLeft()>300) return "right";
-        else if (recognition.get(0).getLeft()<=300) return "middle";
+        if (recognition.isEmpty()) return "left";
+        for (int i = 0; i<recognition.size(); i++) {
+            if (recognition.get(i).getWidth()>250 || recognition.get(i).getHeight()>250) {}
+            else if (recognition.get(i).getLeft() > 300) return "right";
+            else if (recognition.get(i).getLeft() <= 300) return "middle";
+        }
         return null;
+
     }
 }

@@ -15,9 +15,8 @@ import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
 import java.util.List;
-import java.util.Vector;
 
-@Autonomous (name = "FULL_BLUE", group = "autos")
+@Autonomous (name = "Blue_Auto_Full", group = "autos")
 public class Blue_Auto_Full extends LinearOpMode
 {    private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
@@ -35,8 +34,8 @@ public class Blue_Auto_Full extends LinearOpMode
      */
     private VisionPortal visionPortal;
 
-    public double middlePos1 = 0.6;
-    public double middlePos2 = 0.63;
+    public double middlePos1 = 0.74;
+    public double hoverPos = 0.7765;
 
 
     @Override
@@ -46,44 +45,40 @@ public class Blue_Auto_Full extends LinearOpMode
         Slide slide = new Slide(hardwareMap);
         String path = "middle";
 
-        TrajectorySequence middle1 = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
-                .lineToLinearHeading(new Pose2d(-40.07, -33, Math.toRadians(90.00)))
-                .lineTo(new Vector2d(-40.07, -40.53))
-                .lineToLinearHeading(new Pose2d(-37.97, -61.48, Math.toRadians(180.00)))
+        TrajectorySequence middlePush = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
+                .lineToLinearHeading(new Pose2d(-40.07, -31, Math.toRadians(90.00)))
+                .lineTo(new Vector2d(-37.97, -50))
+                .lineToLinearHeading(new Pose2d(-37.97, -59, Math.toRadians(180.00)))
+                .build();
+
+        TrajectorySequence leftPush = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
+                .lineToLinearHeading(new Pose2d(-37.97, -48.41, Math.toRadians(180-78.019108272)))
+                .lineToLinearHeading(new Pose2d(-43.62, -37.6256, Math.toRadians(180-52.790445864)))
+                .lineToLinearHeading(new Pose2d(-37.97, -48.41, Math.toRadians(180-78.019108272)))
+                .lineToLinearHeading(new Pose2d(-37.97, -59, Math.toRadians(180.00)))
+                .build();
+
+        TrajectorySequence left2 = drive.trajectorySequenceBuilder(leftPush.end())
+                .lineToLinearHeading(new Pose2d(7, -35.5, Math.toRadians(0.00)))
                 .build();
 
 
-        TrajectorySequence middle2 = drive.trajectorySequenceBuilder(middle1.end())
-                .lineTo(new Vector2d(-106.97, -61.48))
-                .lineTo(new Vector2d(-108.98, -34.04))
+        TrajectorySequence rightPush = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
+                .lineToLinearHeading(new Pose2d(-20.14, -36.78, Math.toRadians(90.00)))
+                .lineTo(new Vector2d(-20.14, -51.53))
+                .lineToLinearHeading(new Pose2d(-37.97, -59, Math.toRadians(180.00)))
                 .build();
 
-        TrajectorySequence middle3 = drive.trajectorySequenceBuilder(middle2.end())
-                .lineTo(new Vector2d(-122.8, -51.53))
-                .lineTo(new Vector2d(-154, -39.32))
+        TrajectorySequence park = drive.trajectorySequenceBuilder(new Pose2d(9.17, -36.39, Math.toRadians(0.00)))
+                .lineTo(new Vector2d(-5.28, -36.05))
+                .lineTo(new Vector2d(6.95, -60.62))
                 .build();
-
-        TrajectorySequence left = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
-                .lineToLinearHeading(new Pose2d(-37.97, -46.74, Math.toRadians(107.49)))
-                .lineToLinearHeading(new Pose2d(-39.98, -34.04, Math.toRadians(150.00)))
-                .lineTo(new Vector2d(-35.86, -42.01))
-                .build();
-
-        TrajectorySequence right = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
-                .lineToLinearHeading(new Pose2d(-22.14, -41.78, Math.toRadians(90.00)))
-                .lineTo(new Vector2d(-22.14, -51.53))
-                .build();
-
-        TrajectorySequence park = drive.trajectorySequenceBuilder(new Pose2d(-60.77, -36.39, Math.toRadians(180.00)))
-                .lineTo(new Vector2d(-47.28, -36.05))
-                .lineTo(new Vector2d(-58.99, -60.62))
-                .build();
-
         initTfod();
 
         while (!isStarted()) {
             telemetryTfod();
             telemetry.update();
+            slide.launch(false);
             slide.middleClaw();
             path = getSide();
         }
@@ -93,36 +88,48 @@ public class Blue_Auto_Full extends LinearOpMode
 
         sleep(500);
 
+        slide.bottomAuto();
+        drive.setPoseEstimate(middlePush.start());
 
-        drive.setPoseEstimate(middle1.start());
-
-        slide.setArmPos(middlePos2);
-        drive.followTrajectorySequence(middle1);
-        slide.setArmPos(0.78);
-        drive.followTrajectorySequence(middle2);
-        slide.setArmPos(middlePos2);
-        drive.followTrajectorySequence(middle3);
-        sleep(1000);
-        slide.openClaw();
-
-        drive.setPoseEstimate(park.start());
-        drive.followTrajectorySequence(park);
-
-        /*switch(path)
+        switch(path)
         {
             case "left":
-                drive.followTrajectorySequence(left);
+                drive.followTrajectorySequence(leftPush);
+                sleep(500);
+                slide.setArmPos(middlePos1);
                 sleep(1000);
+                drive.followTrajectorySequence(left2);
+                slide.openClaw();
+                sleep(2000);
+
+                drive.setPoseEstimate(park.start());
+                slide.setArmPos(0.675);
+                drive.followTrajectorySequence(park);
                 break;
             case "right":
-                drive.followTrajectorySequence(right);
+                drive.followTrajectorySequence(rightPush);
+                slide.setArmPos(hoverPos);
+                //slide.setArmPos(middlePos1);
                 sleep(1000);
+                slide.openClaw();
+                sleep(2000);
+
+                drive.setPoseEstimate(park.start());
+                slide.setArmPos(0.675);
+                drive.followTrajectorySequence(park);
                 break;
             case "middle":
-                drive.followTrajectorySequence(middle);
+                drive.followTrajectorySequence(middlePush);
+                slide.setArmPos(hoverPos);
                 sleep(1000);
+                slide.openClaw();
+                sleep(2000);
+
+                drive.setPoseEstimate(park.start());
+                slide.setArmPos(hoverPos);
+                drive.followTrajectorySequence(park);
                 break;
-        }*/
+        }
 
 
     }
@@ -198,7 +205,7 @@ public class Blue_Auto_Full extends LinearOpMode
         visionPortal = builder.build();
 
         // Set confidence threshold for TFOD recognitions, at any time.
-        //tfod.setMinResultConfidence(0.75f);
+        tfod.setMinResultConfidence(0.8f);
 
         // Disable or re-enable the TFOD processor at any time.
         //visionPortal.setProcessorEnabled(tfod, true);
@@ -209,9 +216,13 @@ public class Blue_Auto_Full extends LinearOpMode
      */
     private String getSide() {
         List<Recognition> recognition = tfod.getRecognitions();
-        if (recognition.isEmpty())return "right";
-        else if (recognition.get(0).getLeft()>200) return "middle";
-        else if (recognition.get(0).getLeft()<=200) return "left";
+        for (int i = 0; i<recognition.size(); i++) {
+            if (recognition.get(i).getWidth()>250 || recognition.get(i).getHeight()>250);
+            else if (recognition.isEmpty()) return "left";
+            else if (recognition.get(i).getLeft() > 300) return "right";
+            else if (recognition.get(i).getLeft() <= 300) return "middle";
+        }
         return null;
+
     }
 }
