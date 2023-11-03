@@ -47,13 +47,13 @@ public class Red_Auto_Backdrop extends LinearOpMode
         TrajectorySequence middle = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
                 .lineToLinearHeading(new Pose2d(-40.07, -31, Math.toRadians(90.00)))
                 .lineTo(new Vector2d(-39.55, -40.53))
-                .lineToLinearHeading(new Pose2d(5, -43.32, Math.toRadians(0.00)))
+                .lineToLinearHeading(new Pose2d(6.5, -43.32, Math.toRadians(0.00)))
                 .build();
 
         TrajectorySequence left = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
-                .lineToLinearHeading(new Pose2d(-37.97, -48.41, Math.toRadians(180-78.019108272)))
+                .lineToLinearHeading(new Pose2d(-35.97, -48.41, Math.toRadians(180-78.019108272)))
                 .lineToLinearHeading(new Pose2d(-43.62, -37.6256, Math.toRadians(180-52.790445864)))
-                .lineToLinearHeading(new Pose2d(-37.97, -48.41, Math.toRadians(180-78.019108272)))
+                .lineToLinearHeading(new Pose2d(-35.97, -48.41, Math.toRadians(180-78.019108272)))
                 .build();
 
         TrajectorySequence left2 = drive.trajectorySequenceBuilder(left.end())
