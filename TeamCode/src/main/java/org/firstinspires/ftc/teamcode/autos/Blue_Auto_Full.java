@@ -37,6 +37,8 @@ public class Blue_Auto_Full extends LinearOpMode
     public double middlePos1 = 0.74;
     public double hoverPos = 0.7765;
 
+    Pose2d estimateScore = new Pose2d(-37.97 - 23.5, -61.48 + 23.5, Math.toRadians(180.00));
+
 
     @Override
     public void runOpMode() throws InterruptedException
@@ -53,20 +55,39 @@ public class Blue_Auto_Full extends LinearOpMode
 
         TrajectorySequence leftPush = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
                 .lineToLinearHeading(new Pose2d(-37.97, -48.41, Math.toRadians(180-78.019108272)))
-                .lineToLinearHeading(new Pose2d(-43.62, -37.6256, Math.toRadians(180-52.790445864)))
+                .lineToLinearHeading(new Pose2d(-43.12, -37.6256, Math.toRadians(180-52.790445864)))
                 .lineToLinearHeading(new Pose2d(-37.97, -48.41, Math.toRadians(180-78.019108272)))
                 .lineToLinearHeading(new Pose2d(-37.97, -59, Math.toRadians(180.00)))
                 .build();
 
-        TrajectorySequence left2 = drive.trajectorySequenceBuilder(leftPush.end())
-                .lineToLinearHeading(new Pose2d(7, -35.5, Math.toRadians(0.00)))
+        TrajectorySequence leftScore = drive.trajectorySequenceBuilder(estimateScore)
+                .lineToLinearHeading(new Pose2d(-84.5, -39.32, Math.toRadians(180.00)))
                 .build();
+
+        TrajectorySequence middleScore = drive.trajectorySequenceBuilder(estimateScore)
+                .lineToLinearHeading(new Pose2d(-84, -41.32, Math.toRadians(180.00)))
+                .build();
+
+        TrajectorySequence rightScore = drive.trajectorySequenceBuilder(estimateScore)
+                .lineToLinearHeading(new Pose2d(-83.5, -31.5, Math.toRadians(180.00)))
+                .build();
+
 
 
         TrajectorySequence rightPush = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
                 .lineToLinearHeading(new Pose2d(-20.14, -36.78, Math.toRadians(90.00)))
                 .lineTo(new Vector2d(-20.14, -51.53))
                 .lineToLinearHeading(new Pose2d(-37.97, -59, Math.toRadians(180.00)))
+                .build();
+
+        TrajectorySequence passUnder1 = drive.trajectorySequenceBuilder(new Pose2d())
+                .lineTo(new Vector2d(0, -23))
+                .lineTo(new Vector2d(47, -23))
+                .build();
+
+        TrajectorySequence passUnder2 = drive.trajectorySequenceBuilder(new Pose2d())
+                .lineTo(new Vector2d(0, 94))
+                .lineTo(new Vector2d(-23.5, 94))
                 .build();
 
         TrajectorySequence park = drive.trajectorySequenceBuilder(new Pose2d(9.17, -36.39, Math.toRadians(0.00)))
@@ -96,9 +117,16 @@ public class Blue_Auto_Full extends LinearOpMode
             case "left":
                 drive.followTrajectorySequence(leftPush);
                 sleep(500);
+                drive.setPoseEstimate(new Pose2d());
+                drive.followTrajectorySequence(passUnder1);
+                slide.setArmPos(hoverPos);
+                drive.setPoseEstimate(new Pose2d());
+                drive.followTrajectorySequence(passUnder2);
                 slide.setArmPos(middlePos1);
                 sleep(1000);
-                drive.followTrajectorySequence(left2);
+                drive.setPoseEstimate(estimateScore);
+                drive.followTrajectorySequence(leftScore);
+                sleep(1000);
                 slide.openClaw();
                 sleep(2000);
 
@@ -108,19 +136,35 @@ public class Blue_Auto_Full extends LinearOpMode
                 break;
             case "right":
                 drive.followTrajectorySequence(rightPush);
+                sleep(500);
+                drive.setPoseEstimate(new Pose2d());
+                drive.followTrajectorySequence(passUnder1);
                 slide.setArmPos(hoverPos);
-                //slide.setArmPos(middlePos1);
+                drive.setPoseEstimate(new Pose2d());
+                drive.followTrajectorySequence(passUnder2);
+                slide.setArmPos(middlePos1);
+                sleep(1000);
+                drive.setPoseEstimate(estimateScore);
+                drive.followTrajectorySequence(rightScore);
                 sleep(1000);
                 slide.openClaw();
                 sleep(2000);
-
                 drive.setPoseEstimate(park.start());
                 slide.setArmPos(0.675);
                 drive.followTrajectorySequence(park);
                 break;
             case "middle":
                 drive.followTrajectorySequence(middlePush);
+                sleep(500);
+                drive.setPoseEstimate(new Pose2d());
+                drive.followTrajectorySequence(passUnder1);
                 slide.setArmPos(hoverPos);
+                drive.setPoseEstimate(new Pose2d());
+                drive.followTrajectorySequence(passUnder2);
+                sleep(1000);
+                drive.setPoseEstimate(estimateScore);
+                drive.followTrajectorySequence(middleScore);
+                slide.setArmPos(middlePos1);
                 sleep(1000);
                 slide.openClaw();
                 sleep(2000);
@@ -216,13 +260,13 @@ public class Blue_Auto_Full extends LinearOpMode
      */
     private String getSide() {
         List<Recognition> recognition = tfod.getRecognitions();
+        if (recognition.isEmpty()) return "left";
         for (int i = 0; i<recognition.size(); i++) {
-            if (recognition.get(i).getWidth()>250 || recognition.get(i).getHeight()>250);
-            else if (recognition.isEmpty()) return "left";
+            if (recognition.get(i).getWidth()>250 || recognition.get(i).getHeight()>250) {}
             else if (recognition.get(i).getLeft() > 300) return "right";
             else if (recognition.get(i).getLeft() <= 300) return "middle";
         }
-        return null;
+        return "left";
 
     }
 }
