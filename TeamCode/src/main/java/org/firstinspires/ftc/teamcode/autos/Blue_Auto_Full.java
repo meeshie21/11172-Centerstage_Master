@@ -48,7 +48,7 @@ public class Blue_Auto_Full extends LinearOpMode
         String path = "middle";
 
         TrajectorySequence middlePush = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
-                .lineToLinearHeading(new Pose2d(-40.07, -31, Math.toRadians(90.00)))
+                .lineToLinearHeading(new Pose2d(-40.07, -29.75, Math.toRadians(90.00)))
                 .lineTo(new Vector2d(-37.97, -50))
                 .lineToLinearHeading(new Pose2d(-37.97, -59, Math.toRadians(180.00)))
                 .build();
@@ -61,7 +61,7 @@ public class Blue_Auto_Full extends LinearOpMode
                 .build();
 
         TrajectorySequence leftScore = drive.trajectorySequenceBuilder(estimateScore)
-                .lineToLinearHeading(new Pose2d(-81.5, -39.32, Math.toRadians(180.00)))
+                .lineToLinearHeading(new Pose2d(-88, -39.32, Math.toRadians(180.00)))
                 .build();
 
         TrajectorySequence middleScore = drive.trajectorySequenceBuilder(estimateScore)
@@ -75,19 +75,19 @@ public class Blue_Auto_Full extends LinearOpMode
 
 
         TrajectorySequence rightPush = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
-                .lineToLinearHeading(new Pose2d(-20.14, -36.78, Math.toRadians(90.00)))
-                .lineTo(new Vector2d(-20.14, -51.53))
+                .lineToLinearHeading(new Pose2d(-18.14, -36.78, Math.toRadians(90.00)))
+                .lineTo(new Vector2d(-18.14, -51.53))
                 .lineToLinearHeading(new Pose2d(-37.97, -59, Math.toRadians(180.00)))
                 .build();
 
         TrajectorySequence passUnder1 = drive.trajectorySequenceBuilder(new Pose2d())
-                .lineTo(new Vector2d(0, -23))
-                .lineTo(new Vector2d(47, -23))
+                .lineTo(new Vector2d(10, -16))
+                .lineTo(new Vector2d(47, -16))
                 .build();
 
         TrajectorySequence passUnder2 = drive.trajectorySequenceBuilder(new Pose2d())
-                .lineTo(new Vector2d(0, 94))
-                .lineTo(new Vector2d(-23.5, 94))
+                .lineTo(new Vector2d(0, 101))
+                .lineTo(new Vector2d(-23.5, 101))
                 .build();
 
         TrajectorySequence park = drive.trajectorySequenceBuilder(new Pose2d(9.17, -36.39, Math.toRadians(0.00)))
@@ -101,7 +101,9 @@ public class Blue_Auto_Full extends LinearOpMode
             telemetry.update();
             slide.launch(false);
             slide.middleClaw();
-            path = getSide();
+            if(gamepad1.dpad_right) path = "right";
+            else if(gamepad1.dpad_left) path = "left";
+            //path = getSide();
         }
 
 
@@ -127,6 +129,7 @@ public class Blue_Auto_Full extends LinearOpMode
                 drive.followTrajectorySequence(leftScore);
                 sleep(1000);
                 slide.setArmPos(middlePos1);
+                sleep(2000);
                 slide.openClaw();
                 sleep(1000);
 
@@ -148,6 +151,7 @@ public class Blue_Auto_Full extends LinearOpMode
                 drive.followTrajectorySequence(rightScore);
                 sleep(1000);
                 slide.setArmPos(middlePos1);
+                sleep(2000);
                 slide.openClaw();
                 sleep(2000);
                 drive.setPoseEstimate(park.start());
@@ -167,7 +171,7 @@ public class Blue_Auto_Full extends LinearOpMode
                 drive.followTrajectorySequence(middleScore);
                 sleep(1000);
                 slide.setArmPos(middlePos1);
-                sleep(1000);
+                sleep(2000);
                 slide.openClaw();
                 sleep(2000);
 

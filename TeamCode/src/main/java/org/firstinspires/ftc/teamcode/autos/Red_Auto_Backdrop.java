@@ -47,7 +47,7 @@ public class Red_Auto_Backdrop extends LinearOpMode
         TrajectorySequence middle = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
                 .lineToLinearHeading(new Pose2d(-40.07, -31, Math.toRadians(90.00)))
                 .lineTo(new Vector2d(-39.55, -40.53))
-                .lineToLinearHeading(new Pose2d(8, -43.32, Math.toRadians(0.00)))
+                .lineToLinearHeading(new Pose2d(6, -43.32, Math.toRadians(0.00)))
                 .build();
 
         TrajectorySequence left = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
@@ -57,14 +57,14 @@ public class Red_Auto_Backdrop extends LinearOpMode
                 .build();
 
         TrajectorySequence left2 = drive.trajectorySequenceBuilder(left.end())
-                        .lineToLinearHeading(new Pose2d(8, -35.5, Math.toRadians(0.00)))
+                        .lineToLinearHeading(new Pose2d(6.5, -35.5, Math.toRadians(0.00)))
                 .build();
 
 
                 TrajectorySequence right = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
                 .lineToLinearHeading(new Pose2d(-19.14, -36.78, Math.toRadians(90.00)))
                 .lineTo(new Vector2d(-19.14, -51.53))
-                .lineToLinearHeading(new Pose2d(8, -46.75, Math.toRadians(0.00)))
+                .lineToLinearHeading(new Pose2d(9, -44.75, Math.toRadians(0.00)))
                 .build();
 
         TrajectorySequence park = drive.trajectorySequenceBuilder(new Pose2d(9.17, -36.39, Math.toRadians(0.00)))
@@ -108,6 +108,7 @@ public class Red_Auto_Backdrop extends LinearOpMode
                 drive.followTrajectorySequence(right);
                 sleep(1000);
                 slide.setArmPos(middlePos1);
+                sleep(2000);
                 slide.openClaw();
                 sleep(2000);
 
@@ -119,9 +120,9 @@ public class Red_Auto_Backdrop extends LinearOpMode
                 drive.followTrajectorySequence(middle);
                 sleep(1000);
                 slide.setArmPos(0.75);
-                sleep(1000);
-                slide.openClaw();
                 sleep(2000);
+                slide.openClaw();
+                sleep(1000);
 
                 drive.setPoseEstimate(park.start());
                 slide.setArmPos(0.675);

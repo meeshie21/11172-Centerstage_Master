@@ -52,7 +52,7 @@ public class Blue_Auto_Backdrop extends LinearOpMode
         String path = "middle";
 
         TrajectorySequence middle = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
-                .lineToLinearHeading(new Pose2d(-35.87, -31, Math.toRadians(89.17)))
+                .lineToLinearHeading(new Pose2d(-35.87, -29.75, Math.toRadians(89.17)))
                 .lineTo(new Vector2d(-36.39, -40.53))
                 .lineToLinearHeading(new Pose2d(-81.5, -41.32, Math.toRadians(180.00)))
                 .build();
@@ -78,9 +78,9 @@ public class Blue_Auto_Backdrop extends LinearOpMode
 
 
         TrajectorySequence left = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
-                .lineToLinearHeading(new Pose2d(-55.8, -36.78, Math.toRadians(89.17)))
-                .lineTo(new Vector2d(-55.8, -51.53))
-                .lineToLinearHeading(new Pose2d(-81.5, -39.32, Math.toRadians(180.00)))
+                .lineToLinearHeading(new Pose2d(-58.5, -36.78, Math.toRadians(89.17)))
+                .lineTo(new Vector2d(-58.5, -51.53))
+                .lineToLinearHeading(new Pose2d(-88, -39.32, Math.toRadians(180.00)))
                 .build();
 
         TrajectorySequence park = drive.trajectorySequenceBuilder(new Pose2d(-60.77, -36.39, Math.toRadians(180.00)))
@@ -112,6 +112,7 @@ public class Blue_Auto_Backdrop extends LinearOpMode
                 drive.followTrajectorySequence(left);
                 sleep(1000);
                 slide.setArmPos(0.75);
+                sleep(2000);
                 slide.openClaw();
                 sleep(2000);
 
@@ -124,6 +125,7 @@ public class Blue_Auto_Backdrop extends LinearOpMode
                 drive.followTrajectorySequence(right2);
                 sleep(1000);
                 slide.setArmPos(0.75);
+                sleep(2000);
                 slide.openClaw();
                 sleep(2000);
                 drive.setPoseEstimate(park.start());
@@ -134,7 +136,7 @@ public class Blue_Auto_Backdrop extends LinearOpMode
                 drive.followTrajectorySequence(middle);
                 sleep(1000);
                 slide.setArmPos(0.75);
-                sleep(1000);
+                sleep(2000);
                 slide.openClaw();
                 sleep(2000);
 
