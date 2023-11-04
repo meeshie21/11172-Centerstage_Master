@@ -34,7 +34,7 @@ public class Blue_Auto_Full extends LinearOpMode
      */
     private VisionPortal visionPortal;
 
-    public double middlePos1 = 0.74;
+    public double middlePos1 = 0.75;
     public double hoverPos = 0.7765;
 
     Pose2d estimateScore = new Pose2d(-37.97 - 23.5, -61.48 + 23.5, Math.toRadians(180.00));
@@ -61,15 +61,15 @@ public class Blue_Auto_Full extends LinearOpMode
                 .build();
 
         TrajectorySequence leftScore = drive.trajectorySequenceBuilder(estimateScore)
-                .lineToLinearHeading(new Pose2d(-84.5, -39.32, Math.toRadians(180.00)))
+                .lineToLinearHeading(new Pose2d(-81.5, -39.32, Math.toRadians(180.00)))
                 .build();
 
         TrajectorySequence middleScore = drive.trajectorySequenceBuilder(estimateScore)
-                .lineToLinearHeading(new Pose2d(-84, -41.32, Math.toRadians(180.00)))
+                .lineToLinearHeading(new Pose2d(-81.5, -41.32, Math.toRadians(180.00)))
                 .build();
 
         TrajectorySequence rightScore = drive.trajectorySequenceBuilder(estimateScore)
-                .lineToLinearHeading(new Pose2d(-83.5, -31.5, Math.toRadians(180.00)))
+                .lineToLinearHeading(new Pose2d(-81.5, -31.5, Math.toRadians(180.00)))
                 .build();
 
 
@@ -122,13 +122,13 @@ public class Blue_Auto_Full extends LinearOpMode
                 slide.setArmPos(hoverPos);
                 drive.setPoseEstimate(new Pose2d());
                 drive.followTrajectorySequence(passUnder2);
-                slide.setArmPos(middlePos1);
                 sleep(1000);
                 drive.setPoseEstimate(estimateScore);
                 drive.followTrajectorySequence(leftScore);
                 sleep(1000);
+                slide.setArmPos(middlePos1);
                 slide.openClaw();
-                sleep(2000);
+                sleep(1000);
 
                 drive.setPoseEstimate(park.start());
                 slide.setArmPos(0.675);
@@ -147,6 +147,7 @@ public class Blue_Auto_Full extends LinearOpMode
                 drive.setPoseEstimate(estimateScore);
                 drive.followTrajectorySequence(rightScore);
                 sleep(1000);
+                slide.setArmPos(middlePos1);
                 slide.openClaw();
                 sleep(2000);
                 drive.setPoseEstimate(park.start());
@@ -164,6 +165,7 @@ public class Blue_Auto_Full extends LinearOpMode
                 sleep(1000);
                 drive.setPoseEstimate(estimateScore);
                 drive.followTrajectorySequence(middleScore);
+                sleep(1000);
                 slide.setArmPos(middlePos1);
                 sleep(1000);
                 slide.openClaw();

@@ -93,10 +93,9 @@ public class Red_Auto_Backdrop extends LinearOpMode
         {
             case "left":
                 drive.followTrajectorySequence(left);
-                sleep(500);
-                slide.setArmPos(middlePos1);
-                sleep(1000);
                 drive.followTrajectorySequence(left2);
+                sleep(1000);
+                slide.setArmPos(middlePos1);
                 sleep(1000);
                 slide.openClaw();
                 sleep(2000);
@@ -107,8 +106,8 @@ public class Red_Auto_Backdrop extends LinearOpMode
                 break;
             case "right":
                 drive.followTrajectorySequence(right);
-                slide.setArmPos(middlePos1);
                 sleep(1000);
+                slide.setArmPos(middlePos1);
                 slide.openClaw();
                 sleep(2000);
 
@@ -118,6 +117,7 @@ public class Red_Auto_Backdrop extends LinearOpMode
                 break;
             case "middle":
                 drive.followTrajectorySequence(middle);
+                sleep(1000);
                 slide.setArmPos(0.75);
                 sleep(1000);
                 slide.openClaw();
