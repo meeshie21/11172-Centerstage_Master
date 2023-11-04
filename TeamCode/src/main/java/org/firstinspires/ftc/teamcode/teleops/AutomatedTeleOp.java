@@ -119,11 +119,8 @@ public class AutomatedTeleOp extends LinearOpMode {
 
 //shawty            drive.update();
 
-                    if(gamepad2.x)
-                    {
-                        if(speed == 0.5) speed = 0.65;
-                        else speed = 0.5;
-                    }
+                    //speed = Math.max(0.5, Math.min(gamepad1.right_trigger + 0.5, 0.825));
+                    speed = gamepad1.right_trigger*0.333+0.5;
 
                     if(gamepad1.right_trigger >= 0.5) slide.setArmPos(0.7875);
                     if(gamepad1.right_stick_button) slide.setArmPos(0.675);
@@ -189,6 +186,10 @@ public class AutomatedTeleOp extends LinearOpMode {
                     break;
                 case AUTOMATIC_CONTROL:
                     // If x is pressed, we break out of the automatic following
+                    if (gamepad1.y) {
+                        drive.breakFollowing();
+                        currentMode = Mode.DRIVER_CONTROL;
+                    }
                     if (gamepad1.x) {
                         drive.breakFollowing();
                         currentMode = Mode.DRIVER_CONTROL;
