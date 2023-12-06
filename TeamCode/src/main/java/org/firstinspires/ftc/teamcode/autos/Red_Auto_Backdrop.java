@@ -57,19 +57,19 @@ public class Red_Auto_Backdrop extends LinearOpMode
                 .build();
 
         TrajectorySequence left2 = drive.trajectorySequenceBuilder(left.end())
-                        .lineToLinearHeading(new Pose2d(6.6, -35.5, Math.toRadians(0.00)))
+                        .lineToLinearHeading(new Pose2d(7.6, -35.5, Math.toRadians(0.00)))
                 .build();
 
 
                 TrajectorySequence right = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
                 .lineToLinearHeading(new Pose2d(-19.14, -36.78, Math.toRadians(90.00)))
                 .lineTo(new Vector2d(-19.14, -51.53))
-                .lineToLinearHeading(new Pose2d(9, -44.75, Math.toRadians(0.00)))
+                .lineToLinearHeading(new Pose2d(10, -44.75, Math.toRadians(0.00)))
                 .build();
 
         TrajectorySequence park = drive.trajectorySequenceBuilder(new Pose2d(9.17, -36.39, Math.toRadians(0.00)))
                 .lineTo(new Vector2d(-5.28, -36.05))
-                .lineTo(new Vector2d(5, -60.62))
+                .lineTo(new Vector2d(7, -60.62))
                 .build();
         initTfod();
 
@@ -92,45 +92,40 @@ public class Red_Auto_Backdrop extends LinearOpMode
         switch(path)
         {
             case "left":
+                slide.setArmPos(middlePos1);
                 drive.followTrajectorySequence(left);
                 drive.followTrajectorySequence(left2);
-                sleep(1000);
-                slide.setArmPos(middlePos1);
-                sleep(1000);
-                slide.openClaw();
                 sleep(2000);
+                slide.openClaw();
+                sleep(500);
 
                 drive.setPoseEstimate(park.start());
                 slide.setArmPos(0.675);
                 drive.followTrajectorySequence(park);
                 break;
             case "right":
-                drive.followTrajectorySequence(right);
-                sleep(1000);
                 slide.setArmPos(middlePos1);
+                drive.followTrajectorySequence(right);
                 sleep(2000);
                 slide.openClaw();
-                sleep(2000);
+                sleep(500);
 
                 drive.setPoseEstimate(park.start());
                 slide.setArmPos(0.675);
                 drive.followTrajectorySequence(park);
                 break;
             case "middle":
+                slide.setArmPos(0.74);
                 drive.followTrajectorySequence(middle);
-                sleep(1000);
-                slide.setArmPos(0.75);
                 sleep(2000);
                 slide.openClaw();
-                sleep(1000);
+                sleep(500);
 
                 drive.setPoseEstimate(park.start());
                 slide.setArmPos(0.675);
                 drive.followTrajectorySequence(park);
                 break;
         }
-
-
     }
     private void telemetryTfod() {
 

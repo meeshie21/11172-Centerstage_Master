@@ -105,9 +105,58 @@ public class AutomatedTeleOp extends LinearOpMode {
             telemetry.addData("heading", poseEstimate.getHeading());
             telemetry.update();
 
+            drive.setWeightedDrivePower(
+                    new Pose2d(
+                            -gamepad2.left_stick_y * speed,
+                            -gamepad2.left_stick_x * speed,
+                            -gamepad2.right_stick_x * speed
+                    )
+            );
+
+//shawty            drive.update();
+
+            //speed = Math.max(0.5, Math.min(gamepad1.right_trigger + 0.5, 0.825));
+            speed = gamepad1.right_trigger/3+0.5;
+
+            if(gamepad1.right_trigger >= 0.5) slide.setArmPos(0.7875);
+            if(gamepad1.right_stick_button) slide.setArmPos(0.675);
+            if(gamepad1.left_stick_button) slide.setArmPos(0.7765);
+            if(gamepad1.right_bumper) slide.middleClaw();
+            if(gamepad1.left_bumper) slide.openClaw();
+            slide.setSlide(gamepad1.right_stick_y);
+//penis in my mouth
+            if(gamepad1.dpad_down)
+            {
+                slide.bottom();
+            }
+
+            else if(gamepad1.dpad_up)
+            {
+                slide.top();
+            }
+
+
+            else if(gamepad1.dpad_right)
+            {
+                slide.middle();
+            }
+
+            if(gamepad1.dpad_left) slide.pullLeft(-1);
+            else if(gamepad1.share) slide.pullLeft(1);
+            else slide.pullLeft(0);
+
+            if(gamepad1.circle) slide.pullRight(-1);
+            else if(gamepad1.options) slide.pullRight(1);
+            else slide.pullRight(0);
+
+            if(gamepad1.touchpad)
+            {
+                slide.launch(true);
+            }
+
             // We follow different logic based on whether we are in manual driver control or switch
             // control to the automatic mode
-            switch (currentMode) {
+            /*switch (currentMode) {
                 case DRIVER_CONTROL:
                     drive.setWeightedDrivePower(
                             new Pose2d(
@@ -159,7 +208,7 @@ public class AutomatedTeleOp extends LinearOpMode {
                     }
 
 
-                   if (gamepad2.circle) {
+                  /* if (gamepad2.circle) {
                         // If the B button is pressed on gamepad1, we generate a lineTo()
                         // trajectory on the fly and follow it
                         // We switch the state to AUTOMATIC_CONTROL
@@ -181,7 +230,7 @@ public class AutomatedTeleOp extends LinearOpMode {
                        slide.openClaw();
                        drive.followTrajectoryAsync(pickup);
 
-                       currentMode = Mode.AUTOMATIC_CONTROL;
+                       //currentMode = Mode.AUTOMATIC_CONTROL;
                     }
                     break;
                 case AUTOMATIC_CONTROL:
@@ -200,7 +249,7 @@ public class AutomatedTeleOp extends LinearOpMode {
                         currentMode = Mode.DRIVER_CONTROL;
                     }
                     break;
-            }
+            }*/
         }
     }
 }

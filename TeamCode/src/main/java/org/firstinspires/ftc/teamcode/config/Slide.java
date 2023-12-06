@@ -11,6 +11,12 @@ public class Slide {
     public DcMotor slide, tape, pullRight, pullLeft;
     public Servo arm, claw, right, left, launcher;
 
+    public double liftLPos, liftRPos, armPos;
+
+    public double liftIncrement = 0.01;
+
+    public double armIncrement = 0.05;
+
     public Slide(HardwareMap map) {
         slide = map.dcMotor.get("slide");
         launcher = map.servo.get("launcher");
@@ -82,6 +88,29 @@ public class Slide {
         setArmPos(0.765);
         right.setPosition(0.5);
         left.setPosition(0.5);
+    }
+
+    public void calibrateLift(boolean armUp, boolean armDown, boolean liftUp, boolean liftDown) {
+        armPos = arm.getPosition();
+        liftLPos = left.getPosition();
+        liftRPos = right.getPosition();
+
+        if (armUp) {
+            arm.setPosition(armPos + armIncrement);
+        }
+        if (armDown) {
+            arm.setPosition(armPos - armIncrement);
+        }
+
+        if (liftUp) {
+            left.setPosition(liftLPos + liftIncrement);
+            right.setPosition(liftRPos - liftIncrement);
+        }
+
+        if (liftDown) {
+            left.setPosition(liftLPos - liftIncrement);
+            right.setPosition(liftRPos - liftIncrement);
+        }
     }
 
     public void top()
