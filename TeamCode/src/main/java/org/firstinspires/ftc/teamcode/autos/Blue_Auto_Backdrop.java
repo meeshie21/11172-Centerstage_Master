@@ -54,6 +54,7 @@ public class Blue_Auto_Backdrop extends LinearOpMode
         TrajectorySequence middle = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
                 .lineToLinearHeading(new Pose2d(-35.87, -29.75, Math.toRadians(89.17)))
                 .lineTo(new Vector2d(-36.39, -40.53))
+                .lineToLinearHeading(new Pose2d(-62, -41.32, Math.toRadians(180.00)))
                 .lineToLinearHeading(new Pose2d(-82.5, -41.32, Math.toRadians(180.00)))
                 .build();
 
@@ -73,6 +74,7 @@ public class Blue_Auto_Backdrop extends LinearOpMode
                 .build();
 
         TrajectorySequence right2 = drive.trajectorySequenceBuilder(right.end())
+                .lineToLinearHeading(new Pose2d(-62, -41.32, Math.toRadians(180.00)))
                 .lineToLinearHeading(new Pose2d(-82.5, -33, Math.toRadians(180.00)))
                 .build();
 
@@ -80,6 +82,7 @@ public class Blue_Auto_Backdrop extends LinearOpMode
         TrajectorySequence left = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
                 .lineToLinearHeading(new Pose2d(-59.3, -36.78, Math.toRadians(89.17)))
                 .lineTo(new Vector2d(-59.3, -51.53))
+                .lineToLinearHeading(new Pose2d(-75, -41.32, Math.toRadians(180.00)))
                 .lineToLinearHeading(new Pose2d(-89, -39.32, Math.toRadians(180.00)))
                 .build();
 

@@ -47,6 +47,7 @@ public class Red_Auto_Backdrop extends LinearOpMode
         TrajectorySequence middle = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
                 .lineToLinearHeading(new Pose2d(-40.07, -31, Math.toRadians(90.00)))
                 .lineTo(new Vector2d(-39.55, -40.53))
+                .lineToLinearHeading(new Pose2d(-10, -43.32, Math.toRadians(0.00)))
                 .lineToLinearHeading(new Pose2d(6, -43.32, Math.toRadians(0.00)))
                 .build();
 
@@ -57,14 +58,16 @@ public class Red_Auto_Backdrop extends LinearOpMode
                 .build();
 
         TrajectorySequence left2 = drive.trajectorySequenceBuilder(left.end())
-                        .lineToLinearHeading(new Pose2d(7.6, -35.5, Math.toRadians(0.00)))
+                .lineToLinearHeading(new Pose2d(-10, -43.32, Math.toRadians(0.00)))
+                .lineToLinearHeading(new Pose2d(7.6, -35.5, Math.toRadians(0.00)))
                 .build();
 
 
                 TrajectorySequence right = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
                 .lineToLinearHeading(new Pose2d(-19.14, -36.78, Math.toRadians(90.00)))
                 .lineTo(new Vector2d(-19.14, -51.53))
-                .lineToLinearHeading(new Pose2d(10, -44.75, Math.toRadians(0.00)))
+                        .lineToLinearHeading(new Pose2d(0, -43.32, Math.toRadians(0.00)))
+                        .lineToLinearHeading(new Pose2d(10, -44.75, Math.toRadians(0.00)))
                 .build();
 
         TrajectorySequence park = drive.trajectorySequenceBuilder(new Pose2d(9.17, -36.39, Math.toRadians(0.00)))

@@ -86,19 +86,17 @@ public class SlideTest2 extends LinearOpMode
                 slide.middle();
             }
 
-            if(gamepad1.dpad_left) slide.pullLeft(-1);
-            else if(gamepad1.share) slide.pullLeft(1);
-            else slide.pullLeft(0);
-
-            if(gamepad1.circle) slide.pullRight(-1);
-            else if(gamepad1.options) slide.pullRight(1);
-            else slide.pullRight(0);
-
             if(gamepad1.touchpad && !launch)
             {
                 timer.reset();
                 launch = true;
             }
+
+            if(gamepad2.right_bumper) slide.setLift(1);
+            else slide.setLift(-0.25 * gamepad2.right_trigger);
+            if(gamepad2.left_bumper) slide.setWinch(-1);
+            else slide.setWinch(gamepad2.left_trigger);
+
 
             if(launch && timer.seconds() > 2) launch = false;
 

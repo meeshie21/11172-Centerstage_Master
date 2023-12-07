@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class Slide {
-    public DcMotor slide, tape, pullRight, pullLeft;
+    public DcMotor slide, tape, pullRight, pullLeft, winch, lift;
     public Servo arm, claw, right, left, launcher;
 
     public double liftLPos, liftRPos, armPos;
@@ -19,10 +19,12 @@ public class Slide {
 
     public Slide(HardwareMap map) {
         slide = map.dcMotor.get("slide");
+        winch = map.dcMotor.get("winch");
+        lift = map.dcMotor.get("lift");
         launcher = map.servo.get("launcher");
        // tape = map.dcMotor.get("tape");
-        pullRight = map.dcMotor.get("pullRight");
-        pullLeft = map.dcMotor.get("pullLeft");
+        //pullRight = map.dcMotor.get("pullRight");
+        //pullLeft = map.dcMotor.get("pullLeft");
 
         claw = map.servo.get("claw");
         arm = map.servo.get("arm");
@@ -38,6 +40,17 @@ public class Slide {
     public void setSlide(double power) {
         slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         slide.setPower(power);
+    }
+
+    public void setLift(double power) {
+        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        lift.setPower(power);
+    }
+    public void setWinch(double power) {
+        winch.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        winch.setPower(-1 * power);
     }
 
     public void pull(double power) {
