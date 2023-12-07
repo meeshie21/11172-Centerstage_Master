@@ -45,36 +45,30 @@ public class Red_Auto_Backdrop extends LinearOpMode
         String path = "middle";
 
         TrajectorySequence middle = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
-                .lineToLinearHeading(new Pose2d(-40.07, -31, Math.toRadians(90.00)))
+                .lineToLinearHeading(new Pose2d(-40.07, -33, Math.toRadians(90.00)))
                 .lineTo(new Vector2d(-39.55, -40.53))
-                .lineToLinearHeading(new Pose2d(-10, -43.32, Math.toRadians(0.00)))
-                .lineToLinearHeading(new Pose2d(6, -43.32, Math.toRadians(0.00)))
+                .lineToLinearHeading(new Pose2d(9.06, -41.32, Math.toRadians(0.00)))
                 .build();
 
         TrajectorySequence left = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
-                .lineToLinearHeading(new Pose2d(-37.97, -48.41, Math.toRadians(180-78.019108272)))
-                .lineToLinearHeading(new Pose2d(-43.62, -37.6256, Math.toRadians(180-52.790445864)))
-                .lineToLinearHeading(new Pose2d(-37.97, -48.41, Math.toRadians(180-78.019108272)))
+                .lineToLinearHeading(new Pose2d(-37.97, -46.74, Math.toRadians(107.49)))
+                .lineToLinearHeading(new Pose2d(-39.98, -34.04, Math.toRadians(150.00)))
+                .lineTo(new Vector2d(-35.86, -42.01))
+                .lineToLinearHeading(new Pose2d(10.5, -26.32, Math.toRadians(0.00)))
                 .build();
 
-        TrajectorySequence left2 = drive.trajectorySequenceBuilder(left.end())
-                .lineToLinearHeading(new Pose2d(-10, -43.32, Math.toRadians(0.00)))
-                .lineToLinearHeading(new Pose2d(7.6, -35.5, Math.toRadians(0.00)))
-                .build();
-
-
-                TrajectorySequence right = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
-                .lineToLinearHeading(new Pose2d(-19.14, -36.78, Math.toRadians(90.00)))
-                .lineTo(new Vector2d(-19.14, -51.53))
-                        .lineToLinearHeading(new Pose2d(0, -43.32, Math.toRadians(0.00)))
-                        .lineToLinearHeading(new Pose2d(10, -44.75, Math.toRadians(0.00)))
+        TrajectorySequence right = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
+                .lineToLinearHeading(new Pose2d(-22.14, -41.78, Math.toRadians(90.00)))
+                .lineTo(new Vector2d(-22.14, -51.53))
+                .lineToLinearHeading(new Pose2d(11, -43.8, Math.toRadians(0.00)))
                 .build();
 
         TrajectorySequence park = drive.trajectorySequenceBuilder(new Pose2d(9.17, -36.39, Math.toRadians(0.00)))
                 .lineTo(new Vector2d(-5.28, -36.05))
-                .lineTo(new Vector2d(7, -60.62))
+                .lineTo(new Vector2d(6.95, -60.62))
                 .build();
         initTfod();
+
 
         while (!isStarted()) {
             telemetryTfod();
@@ -95,37 +89,30 @@ public class Red_Auto_Backdrop extends LinearOpMode
         switch(path)
         {
             case "left":
-                slide.setArmPos(middlePos1);
+                slide.setArmPos(0.6);
                 drive.followTrajectorySequence(left);
-                drive.followTrajectorySequence(left2);
-                sleep(2000);
+                sleep(1000);
                 slide.openClaw();
-                sleep(500);
 
                 drive.setPoseEstimate(park.start());
-                slide.setArmPos(0.675);
                 drive.followTrajectorySequence(park);
                 break;
             case "right":
-                slide.setArmPos(middlePos1);
+                slide.setArmPos(0.6);
                 drive.followTrajectorySequence(right);
-                sleep(2000);
+                sleep(1000);
                 slide.openClaw();
-                sleep(500);
 
                 drive.setPoseEstimate(park.start());
-                slide.setArmPos(0.675);
                 drive.followTrajectorySequence(park);
                 break;
             case "middle":
-                slide.setArmPos(0.74);
+                slide.setArmPos(0.65);
                 drive.followTrajectorySequence(middle);
-                sleep(2000);
+                sleep(1000);
                 slide.openClaw();
-                sleep(500);
 
                 drive.setPoseEstimate(park.start());
-                slide.setArmPos(0.675);
                 drive.followTrajectorySequence(park);
                 break;
         }
