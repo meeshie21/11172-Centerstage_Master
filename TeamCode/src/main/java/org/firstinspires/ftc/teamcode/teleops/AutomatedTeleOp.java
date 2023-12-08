@@ -76,6 +76,10 @@ public class AutomatedTeleOp extends LinearOpMode {
         Slide slide = new Slide(hardwareMap);
         double speed = 0.5;
 
+        double deadzone = 0.05;
+
+        
+
 
         // We want to turn off velocity control for teleop
         // Velocity control per wheel is not necessary outside of motion profiled auto
@@ -90,6 +94,9 @@ public class AutomatedTeleOp extends LinearOpMode {
         waitForStart();
 
         if (isStopRequested()) return;
+        double forward = 0;
+        double strafe = 0;
+        double turn = 0;
 
         while (opModeIsActive() && !isStopRequested()) {
             // Update the drive class
@@ -105,13 +112,22 @@ public class AutomatedTeleOp extends LinearOpMode {
             telemetry.addData("heading", poseEstimate.getHeading());
             telemetry.update();
 
+
+            forward = (Math.abs(gamepad2.left_stick_y)>deadzone) ? -gamepad2.left_stick_y : 0;
+            strafe = (Math.abs(gamepad2.left_stick_x)>deadzone) ? -gamepad2.left_stick_x : 0;
+            turn = (Math.abs(gamepad2.right_stick_y)>deadzone) ? -gamepad2.right_stick_y : 0;
+
+
             drive.setWeightedDrivePower(
                     new Pose2d(
-                            -gamepad2.left_stick_y * speed,
-                            -gamepad2.left_stick_x * speed,
-                            -gamepad2.right_stick_x * speed
+                            forward * speed,
+                            strafe * speed,
+                            turn * speed
                     )
             );
+
+
+            
 
 //shawty            drive.update();
 

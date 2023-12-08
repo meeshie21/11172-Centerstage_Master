@@ -8,6 +8,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.config.BetterBoolGamepad;
+import org.firstinspires.ftc.teamcode.config.CalibrateServo;
 import org.firstinspires.ftc.teamcode.config.Slide;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
@@ -19,48 +21,50 @@ public class SlideTest2 extends LinearOpMode
         boolean launch = false;
         ElapsedTime timer = new ElapsedTime();
 
+
         Slide slide = new Slide(hardwareMap);
+        CalibrateServo calArm = new CalibrateServo(slide.arm, 0.005);
+        CalibrateServo calClaw = new CalibrateServo(slide.claw, 0.005);
+        BetterBoolGamepad bGamepad1 = new BetterBoolGamepad(gamepad1);
+        BetterBoolGamepad bGamepad2 = new BetterBoolGamepad(gamepad2);
+        slide.arm.setPosition(0.675);
+        slide.claw.setPosition(0.5);
         double speed = 0.5;
+        double deadzone = 0.05;
+        double forward, strafe, turn;
+
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 
 
         waitForStart();
 //hottie
         while(opModeIsActive() && !isStopRequested())
         {
+            forward = (Math.abs(gamepad2.left_stick_y)>deadzone) ? -gamepad2.left_stick_y : 0;
             drive.setWeightedDrivePower(
                     new Pose2d(
-                            -gamepad2.left_stick_y * speed,
-                            -gamepad2.left_stick_x * speed,
-                            -gamepad2.right_stick_x * speed
+                            forward,
+                            -gamepad2.left_stick_x,
+                            -gamepad2.right_stick_x
                     )
             );
 
-            if(gamepad2.circle)
-            {
-                 Trajectory pickup = drive.trajectoryBuilder(new Pose2d())
-                    .lineTo(new Vector2d(0, -6))
-                    .lineTo(new Vector2d(2, -6))
-                    .build();
-
-
-            }
-
-//shawty            drive.update();
+            drive.update();
 
             Pose2d poseEstimate = drive.getPoseEstimate();
             telemetry.addData("x", poseEstimate.getX());
             telemetry.addData("y", poseEstimate.getY());
             telemetry.addData("heading", poseEstimate.getHeading());
+            telemetry.addData("motor pos", slide.slide.getCurrentPosition());
             telemetry.update();
 
-            if(gamepad2.x)
-            {
-                if(speed == 0.5) speed = 0.65;
-                else speed = 0.5;
-            }
+
+            speed = 0.5;
+
+
 
             if(gamepad1.right_trigger >= 0.5) slide.setArmPos(0.8);
             if(gamepad1.left_trigger >= 0.5) slide.setArmPos(0.75);
@@ -68,6 +72,10 @@ public class SlideTest2 extends LinearOpMode
             if(gamepad1.left_stick_button) slide.setArmPos(0.78);
             if(gamepad1.right_bumper) slide.middleClaw();
             if(gamepad1.left_bumper) slide.openClaw();
+            calArm.calibrate(bGamepad2.dpad_up(), bGamepad1.dpad_down());
+            calClaw.calibrate(bGamepad2.dpad_left(), bGamepad2.dpad_right());
+
+
             slide.setSlide(gamepad1.right_stick_y);
 //penis
             if(gamepad1.dpad_down)
