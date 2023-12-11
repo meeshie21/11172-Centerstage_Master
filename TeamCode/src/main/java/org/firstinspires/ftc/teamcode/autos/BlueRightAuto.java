@@ -16,8 +16,8 @@ import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
 import java.util.List;
 
-@Autonomous (name = "Red_Auto_Backdrop", group = "autos")
-public class Red_Auto_Backdrop extends LinearOpMode
+@Autonomous (name = "BlueRightAuto", group = "autos")
+public class BlueRightAuto extends LinearOpMode
 {    private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
     /**
@@ -47,7 +47,12 @@ public class Red_Auto_Backdrop extends LinearOpMode
         TrajectorySequence middle = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
                 .lineToLinearHeading(new Pose2d(-40.07, -31, Math.toRadians(90.00)))
                 .lineTo(new Vector2d(-39.55, -40.53))
-                .lineToLinearHeading(new Pose2d(7.5, -44.8, Math.toRadians(0.00)))
+                .lineToLinearHeading(new Pose2d(-40.07, -31, Math.toRadians(90.00)))
+                .lineToLinearHeading(new Pose2d(-37.97, -40.48, Math.toRadians(90.00)))
+                .build();
+
+        TrajectorySequence middleReturn = drive.trajectorySequenceBuilder(middle.end())
+                .lineToLinearHeading(new Pose2d(-34.97, -61.48 + 2.125, Math.toRadians(180.00)))
                 .build();
 
         TrajectorySequence left = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
@@ -56,20 +61,32 @@ public class Red_Auto_Backdrop extends LinearOpMode
                 .lineToLinearHeading(new Pose2d(-37.97, -48.41, Math.toRadians(180-78.019108272)))
                 .build();
 
-        TrajectorySequence left2 = drive.trajectorySequenceBuilder(left.end())
-                        .lineToLinearHeading(new Pose2d(7.6, -34.2, Math.toRadians(0.00)))
+        TrajectorySequence leftReturn = drive.trajectorySequenceBuilder(left.end())
+                .lineToLinearHeading(new Pose2d(-34.97, -61.48 + 2.125, Math.toRadians(180.00)))
                 .build();
 
 
-                TrajectorySequence right = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
+        TrajectorySequence right = drive.trajectorySequenceBuilder(new Pose2d(-37.97, -61.48, Math.toRadians(90.00)))
                 .lineToLinearHeading(new Pose2d(-19.14, -36.78, Math.toRadians(90.00)))
                 .lineTo(new Vector2d(-19.14, -51.53))
-                .lineToLinearHeading(new Pose2d(12, -44.75, Math.toRadians(0.00)))
                 .build();
 
-        TrajectorySequence park = drive.trajectorySequenceBuilder(new Pose2d(9.17, -36.39, Math.toRadians(0.00)))
-                .lineTo(new Vector2d(-5.28, -36.05))
-                .lineTo(new Vector2d(5, -60.62))
+        TrajectorySequence rightReturn = drive.trajectorySequenceBuilder(middle.end())
+                .lineToLinearHeading(new Pose2d(-34.97, -61.48 + 2.125, Math.toRadians(180.00)))
+                .build();
+
+        TrajectorySequence score1 = drive.trajectorySequenceBuilder(new Pose2d())
+                .lineTo(new Vector2d(-70.5, 0))
+                .lineTo(new Vector2d(-70.5, 23.5))
+                .build();
+
+        TrajectorySequence score2 = drive.trajectorySequenceBuilder(score1.end())
+                .lineTo(new Vector2d(-70.5 - 14.5, 23.5))
+                .build();
+
+        TrajectorySequence park = drive.trajectorySequenceBuilder(new Pose2d(-60.77, -36.39, Math.toRadians(180.00)))
+                .lineTo(new Vector2d(-47.28, -36.05))
+                .lineTo(new Vector2d(-58.99, -60.62))
                 .build();
         initTfod();
 
@@ -93,12 +110,17 @@ public class Red_Auto_Backdrop extends LinearOpMode
         {
             case "left":
                 drive.followTrajectorySequence(left);
-                drive.followTrajectorySequence(left2);
+                drive.followTrajectorySequence(leftReturn);
+                drive.setPoseEstimate(new Pose2d());
+                slide.setArmPos(0.64);
                 sleep(1000);
+                drive.followTrajectorySequence(score1);
+                slide.setArmPos(0);
+                drive.followTrajectorySequence(score2);
                 slide.setArmPos(middlePos1);
                 sleep(1000);
                 slide.openClaw();
-                sleep(2000);
+                sleep(1000);
 
                 drive.setPoseEstimate(park.start());
                 slide.setArmPos(0);
@@ -106,11 +128,17 @@ public class Red_Auto_Backdrop extends LinearOpMode
                 break;
             case "right":
                 drive.followTrajectorySequence(right);
+                drive.followTrajectorySequence(rightReturn);
+                drive.setPoseEstimate(new Pose2d());
+                slide.setArmPos(0.64);
                 sleep(1000);
+                drive.followTrajectorySequence(score1);
+                slide.setArmPos(0);
+                drive.followTrajectorySequence(score2);
                 slide.setArmPos(middlePos1);
-                sleep(2000);
+                sleep(1000);
                 slide.openClaw();
-                sleep(2000);
+                sleep(1000);
 
                 drive.setPoseEstimate(park.start());
                 slide.setArmPos(0);
@@ -118,14 +146,20 @@ public class Red_Auto_Backdrop extends LinearOpMode
                 break;
             case "middle":
                 drive.followTrajectorySequence(middle);
+                drive.followTrajectorySequence(middleReturn);
+                drive.setPoseEstimate(new Pose2d());
+                slide.setArmPos(0.64);
                 sleep(1000);
-                slide.setArmPos(0.38);
-                sleep(2000);
+                drive.followTrajectorySequence(score1);
+                slide.setArmPos(0);
+                drive.followTrajectorySequence(score2);
+                slide.setArmPos(middlePos1);
+                sleep(1000);
                 slide.openClaw();
                 sleep(1000);
 
                 drive.setPoseEstimate(park.start());
-                slide.setArmPos(0.38);
+                slide.setArmPos(0);
                 drive.followTrajectorySequence(park);
                 break;
         }
@@ -137,15 +171,15 @@ public class Red_Auto_Backdrop extends LinearOpMode
 
         // Step through the list of recognitions and display info for each one.
         if (!currentRecognitions.isEmpty()) {
-        for (Recognition recognition : currentRecognitions) {
-            double x = (recognition.getLeft() + recognition.getRight()) / 2 ;
-            double y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
+            for (Recognition recognition : currentRecognitions) {
+                double x = (recognition.getLeft() + recognition.getRight()) / 2 ;
+                double y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
 
-            telemetry.addData(""," ");
-            telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
-            telemetry.addData("- Position", "%.0f / %.0f", x, y);
-            telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
-        }   // end for() loop
+                telemetry.addData(""," ");
+                telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
+                telemetry.addData("- Position", "%.0f / %.0f", x, y);
+                telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
+            }   // end for() loop
 
         }
     }  // end method telemetryTfod()

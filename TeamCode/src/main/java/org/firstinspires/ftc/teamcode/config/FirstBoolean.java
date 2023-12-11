@@ -1,13 +1,15 @@
 package org.firstinspires.ftc.teamcode.config;
 
 public class FirstBoolean {
-    boolean y = false;
-    boolean z = false;
-    public boolean betterboolean(boolean x) {
-        if (!y)  z = x;
-        else z =  false;
-        y = x;
-        return z;
+    boolean recent = false;
+    boolean returnBool = false;
+    boolean y, z = false;
+    public boolean betterboolean(boolean input) {
+        if (!recent)  returnBool = input;
+        else returnBool =  false;
+        //returnBool = recent ? false : input;
+        recent = input;
+        return returnBool;
     }
-    public void reset() {y = false; z = false;}
+
 }

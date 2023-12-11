@@ -98,7 +98,7 @@ public class Slide {
 
     public void middle()
     {
-        setArmPos(0.765);
+        setArmPos(0.45);
         right.setPosition(0.5);
         left.setPosition(0.5);
     }
@@ -128,14 +128,14 @@ public class Slide {
 
     public void top()
     {
-        setArmPos(0.77);
+        setArmPos(0.5);
         right.setPosition(0.9);
         left.setPosition(0.1);
     }
 
     public void bottom()
     {
-        setArmPos(0.74);
+        setArmPos(0.38);
         right.setPosition(0);
         left.setPosition(1);
     }

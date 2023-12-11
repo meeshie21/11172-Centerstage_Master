@@ -59,7 +59,7 @@ public class VisionCamera {
         for (int i = 0; i < recognition.size(); i++) {
             if (recognition.get(i).getWidth() > 250 || recognition.get(i).getHeight() > 250);
             else if (recognition.get(i).getLeft() > 300) return "right";
-            else if (recognition.get(i).getLeft() <= 300) return "middle";
+            else return "middle";
         }
         return "left";
     }

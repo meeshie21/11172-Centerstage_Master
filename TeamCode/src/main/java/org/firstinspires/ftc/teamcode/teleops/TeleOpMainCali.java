@@ -13,8 +13,8 @@ import org.firstinspires.ftc.teamcode.config.CalibrateServo;
 import org.firstinspires.ftc.teamcode.config.Slide;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
-@TeleOp(name = "TeleOpMain", group = "drive")
-public class SlideTest2 extends LinearOpMode
+@TeleOp(name = "TeleOpMainCali", group = "drive")
+public class TeleOpMainCali extends LinearOpMode
 {
     @Override
     public void runOpMode() throws InterruptedException {
@@ -23,12 +23,10 @@ public class SlideTest2 extends LinearOpMode
 
 
         Slide slide = new Slide(hardwareMap);
-        /*CalibrateServo calArm = new CalibrateServo(slide.arm, 0.005);
-        CalibrateServo calClaw = new CalibrateServo(slide.claw, 0.005);
+        CalibrateServo calArm = new CalibrateServo(slide.arm, 0.02);
         BetterBoolGamepad bGamepad1 = new BetterBoolGamepad(gamepad1);
-        BetterBoolGamepad bGamepad2 = new BetterBoolGamepad(gamepad2);*/
-        slide.arm.setPosition(0.675);
-        slide.claw.setPosition(0.5);
+        BetterBoolGamepad bGamepad2 = new BetterBoolGamepad(gamepad2);
+        slide.arm.setPosition(0.6);
         double speed = 0.5;
         double deadzone = 0.05;
         double forward, strafe, turn;
@@ -59,24 +57,22 @@ public class SlideTest2 extends LinearOpMode
             telemetry.addData("y", poseEstimate.getY());
             telemetry.addData("heading", poseEstimate.getHeading());
             telemetry.addData("motor pos", slide.slide.getCurrentPosition());
-            telemetry.update();
+            //telemetry.update();
 
 
             speed = 0.5;
 
 
 
-            if(gamepad1.right_trigger >= 0.5) slide.setArmPos(0.68);
-            if(gamepad1.left_trigger >= 0.5) slide.setArmPos(0.38);
-            if(gamepad1.right_stick_button) slide.setArmPos(0);
-            if(gamepad1.left_stick_button) slide.setArmPos(0.64);
+            if(gamepad1.right_trigger >= 0.5) slide.setArmPos(0.8);
+            if(gamepad1.left_trigger >= 0.5) slide.setArmPos(0.75);
+            if(gamepad1.right_stick_button) slide.setArmPos(0.675);
+            if(gamepad1.left_stick_button) slide.setArmPos(0.785);
             if(gamepad1.right_bumper) slide.middleClaw();
             if(gamepad1.left_bumper) slide.openClaw();
-            /*calArm.calibrate(bGamepad2.dpad_up(), bGamepad1.dpad_down());
-            calClaw.calibrate(bGamepad2.dpad_left(), bGamepad2.dpad_right());
+            calArm.calibrate(bGamepad2.dpad_up(), bGamepad2.dpad_down());
             telemetry.addData("Arm Pos", calArm.servoPos);
-            telemetry.addData("Claw Pos", calClaw.servoPos);
-            telemetry.update();*/
+            telemetry.update();
 
 
             slide.setSlide(gamepad1.right_stick_y);
@@ -104,7 +100,7 @@ public class SlideTest2 extends LinearOpMode
             }
 
             if(gamepad2.right_bumper) slide.setLift(1);
-            else slide.setLift(-gamepad2.right_trigger);
+            else slide.setLift(-0.25 * gamepad2.right_trigger);
             if(gamepad2.left_bumper) slide.setWinch(-1);
             else slide.setWinch(gamepad2.left_trigger);
 
